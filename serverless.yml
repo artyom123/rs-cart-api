@@ -1,0 +1,36 @@
+service: rs-cart-api1
+frameworkVersion: '3'
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+
+useDotenv: true
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  region: eu-west-1
+  stage: dev
+  vpc:
+    securityGroupIds:
+      - 'sg-0cf56ee91bc4ba0b4'
+      - 'sg-08097d6982fa1a547'
+      - 'sg-0a507aba51807e6a6'
+    subnetIds:
+      - 'subnet-01a6f1fa1f4e1eaea'
+      - 'subnet-0804907cd48830261'
+      - 'subnet-0f9ca8987e403b0f0'
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+          cors: true
+      - http:
+          method: ANY
+          path: '{proxy+}'
+          cors: true
